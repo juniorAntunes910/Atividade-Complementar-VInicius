@@ -157,17 +157,38 @@ public class Main {
         dao.atualizarNome(nome, id);
     }
     public static void atualizarEmailUser(){
-
+        System.out.println("Lista Usuários: ");
+        listarUsuario();
+        System.out.println("Insira o ID do usuário que você deseja atualizar: ");
+        int id = SC.nextInt();
+        System.out.println("Insira o novo Email do usuário: ");
+        SC.nextLine();
+        String email = SC.nextLine();
+        var dao = new UsuarioDao();
+        dao.atualizarEmail(email, id);
     }
     public static void deletarUsuario(){
-
+        var dao = new UsuarioDao();
+        System.out.println("Lista usuários: ");
+        listarUsuario();
+        System.out.println("Insira o ID do usuário que você deseja DELETAR: ");
+        int id = SC.nextInt();
+        Usuario userdel = dao.lerPorID(id);
+        System.out.println("Digite o ID novamente para DELETAR o usuário - " + userdel.getNome());
+        int idconfirm = SC.nextInt();
+        if(id == idconfirm){
+            dao.deletarUsuario(id);
+        }else{
+            System.out.println("IDs incompátiveis!");
+        }
     }
-
 
 
     //Aluno
     public static void menuAluno(){
-
+        System.out.println("""
+                
+                """);
     }
     public static void menuProduto(){
 

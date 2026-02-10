@@ -97,4 +97,34 @@ public class UsuarioDao {
             e.printStackTrace();
         }
     }
+    public void atualizarEmail(String email, int id){
+        String sql = """
+                UPDATE usuarios 
+                SET email = ?
+                WHERE id = ?
+                """;
+        try(Connection conn = Conexao.Conectar()){
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, email);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+            System.out.println("Atualizado com sucesso");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    public void deletarUsuario(int id){
+        String sql = """
+                DELETE FROM usuarios 
+                WHERE id = ?
+                """;
+        try(Connection conn = Conexao.Conectar()){
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            System.out.println("Usuário deletado com sucesso!");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
