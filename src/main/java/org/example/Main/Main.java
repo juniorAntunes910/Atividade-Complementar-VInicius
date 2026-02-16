@@ -1,6 +1,8 @@
 package org.example.Main;
 
+import Dao.AlunoDao;
 import Dao.UsuarioDao;
+import Entidades.Alunos;
 import Entidades.Usuario;
 
 import java.awt.*;
@@ -185,11 +187,252 @@ public class Main {
 
 
     //Aluno
-    public static void menuAluno(){
-        System.out.println("""
-                
-                """);
+    public static void menuAluno() {
+        while (true) {
+            System.out.println("""
+                    1 - Criar Aluno 
+                    2 - Ler Aluno
+                    3 - Atualizar Aluno
+                    4 - Remover Aluno
+                    5 - Voltar ao menu Principal
+                    Escolha opção: 
+                    """);
+            int opcao = SC.nextInt();
+            switch (opcao){
+                case 1:
+                    criarAluno();
+                    break;
+                case 2:
+                    lerAluno();
+                    break;
+                case 3:
+                    atualizarAluno();
+                    break;
+                case 4:
+                    removerAluno();
+                    break;
+                case 5:
+                    menuInicio();
+                    break;
+            }
+        }
     }
+
+    public static void criarAluno(){
+        System.out.println("Insira o nome do Aluno que você deseja criar: ");
+        SC.nextLine();
+        String nome = SC.nextLine();
+        System.out.println("Insira a matricula do aluno que você deseja criar: ");
+        String matricula = SC.nextLine();
+        System.out.println("Insira o nome do curso do aluno que você deseja criar: ");
+        String curso = SC.nextLine();
+        var dao = new AlunoDao();
+        dao.inserirAluno(new Alunos(nome,matricula,curso));
+    }
+    public static void lerAluno(){
+        while(true) {
+            System.out.println("""
+                    1 - Ler Aluno por ID
+                    2 - Ler Aluno por nome
+                    3 - ler Aluno por matricula
+                    4 - ler Alunos por curso
+                    5 - Voltar
+                    """);
+            int opcao = SC.nextInt();
+            switch (opcao){
+                case 1:
+                    lerAlunoPorID();
+                    break;
+                case 2:
+                    lerAlunoPorNome();
+                    break;
+
+                case 3:
+                    lerAlunoPorMatricula();
+                    break;
+                case 4:
+                    lerAlunosPorCurso();
+                    break;
+
+                case 5:
+                    menuAluno();
+                    break;
+            }
+        }
+    }
+    public static void lerAlunoPorID(){
+        System.out.println("Insira o ID do aluno que você deseja buscar: ");
+        int id = SC.nextInt();
+        var dao = new AlunoDao();
+        Alunos aluno = dao.lerAlunoID(id);
+        if(aluno == null){
+            System.out.println("Aluno não existe ");
+            return;
+        }
+        System.out.println(aluno);
+    }
+    public static void lerAlunoPorNome(){
+        System.out.println("Insira o NOME do aluno que você deseja buscar: ");
+        SC.nextLine();
+        String nome = SC.nextLine();
+        var dao = new AlunoDao();
+        Alunos aluno = dao.lerPorNome(nome);
+        if(aluno == null){
+            System.out.println("Aluno não existe ");
+            return;
+        }
+        System.out.println(aluno);
+    }
+    public static void lerAlunoPorMatricula(){
+        System.out.println("Insira o Matricula do aluno que você deseja buscar: ");
+        SC.nextLine();
+        String matricula = SC.nextLine();
+        var dao = new AlunoDao();
+        Alunos aluno = dao.lerPorMatricula(matricula);
+        if(aluno == null){
+            System.out.println("Aluno não existe ");
+            return;
+        }
+        System.out.println(aluno);
+    }
+    public static void lerAlunosPorCurso(){
+        System.out.println("Insira o Curso dos Alunos que você deseja buscar: ");
+        SC.nextLine();
+        String curso = SC.nextLine();
+        var dao = new AlunoDao();
+        ArrayList<Alunos> alunos = dao.lerPorCursos(curso);
+        for(Alunos aluno : alunos ){
+            System.out.println(aluno);
+        }
+    }
+    public static void atualizarAluno(){
+        System.out.println("""
+                1 - Atualizar nome
+                2 - Atualizar matricula
+                3 - Atualizar curso
+                4 - Atualizar Tudo
+                5 - Voltar
+                """);
+        int opcao = SC.nextInt();
+        switch (opcao){
+            case 1:
+                atualizarNomeAluno();
+                break;
+            case 2:
+                atualizarMatricula();
+                break;
+            case 3:
+                atualizarCurso();
+                break;
+            case 4:
+                atualizarTudo();
+                break;
+            case 5:
+                menuAluno();
+                break;
+        }
+    }
+    public static void atualizarNomeAluno(){
+        var dao = new AlunoDao();
+        System.out.println("Insira o id do Aluno que você deseja atualizar: ");
+        int id = SC.nextInt();
+        Alunos aluno = dao.lerAlunoID(id);
+        if(aluno == null){
+            System.out.println("Aluno não existe!");
+            return;
+        }
+        System.out.println("Insira o novo nome do Aluno: ");
+        SC.nextLine();
+        String nome = SC.nextLine();
+        dao.atualizarAlunoNome(id, nome);
+    }
+    public static void atualizarMatricula(){
+        var dao = new AlunoDao();
+        System.out.println("Insira o id do Aluno que você deseja atualizar: ");
+        int id = SC.nextInt();
+        Alunos aluno = dao.lerAlunoID(id);
+        if(aluno == null){
+            System.out.println("Aluno não existe!");
+            return;
+        }
+        System.out.println("Insira a nova Matricula do Aluno: ");
+        SC.nextLine();
+        String matricula = SC.nextLine();
+        dao.atualizarAlunoMatricula(id, matricula);
+    }
+    public static void atualizarCurso(){
+        var dao = new AlunoDao();
+        System.out.println("Insira o id do Aluno que você deseja atualizar: ");
+        int id = SC.nextInt();
+        Alunos aluno = dao.lerAlunoID(id);
+        if(aluno == null){
+            System.out.println("Aluno não existe!");
+            return;
+        }
+        System.out.println("Insira o novo curso do ALuno");
+        SC.nextLine();
+        String curso = SC.nextLine();
+        dao.atualizarCurso(id, curso);
+
+    }
+    public static void atualizarTudo(){
+        var dao = new AlunoDao();
+        System.out.println("Insira o id do Aluno que você deseja atualizar: ");
+        int id = SC.nextInt();
+        Alunos aluno = dao.lerAlunoID(id);
+        if(aluno == null){
+            System.out.println("Aluno não existe!");
+            return;
+        }
+        System.out.println("Insira o novo Nome: ");
+        SC.nextLine();
+        String nome = SC.nextLine();
+        System.out.println("Insira a nova Matricula: ");
+        String matricula = SC.nextLine();
+        System.out.println("Insira o novo Curso: ");
+        String curso = SC.nextLine();
+        Alunos alunoAtualiza = new Alunos(id, nome, matricula, curso);
+        dao.atualizarTudo(alunoAtualiza);
+    }
+    public static void removerAluno() {
+        while (true) {
+            System.out.println("""
+                    1 - Remover aluno por ID
+                    2 - Voltar """);
+            int opcao = SC.nextInt();
+            switch (opcao){
+                case 1:
+                    removerALunoPorID();
+                    break;
+                case 2:
+                    menuAluno();
+                    break;
+            }
+        }
+    }
+    public static void removerALunoPorID(){
+        var dao = new AlunoDao();
+        System.out.println("Insira o id do Aluno que você deseja Remover: ");
+        int id = SC.nextInt();
+        Alunos aluno = dao.lerAlunoID(id);
+        if(aluno == null){
+            System.out.println("Aluno não existe!");
+            return;
+        }
+        System.out.println("""
+                Para DELETAR o usuário digite:
+                EICHENDORF
+                """);
+        SC.nextLine();
+        String confirmaDell = SC.nextLine();
+        if(!confirmaDell.equals("EICHENDORF")){
+            System.out.println("Codigo de confirmação errado");
+            return;
+        }
+        dao.removerAlunoPorID(id);
+    }
+
+    //Menu Produto
     public static void menuProduto(){
 
     }
